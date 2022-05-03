@@ -16,10 +16,10 @@ public class AppTest {
         int amount = 150000;
         int expected = 4850000;
         // when:
-        savingsAccount.transfer(account, amount);
+        boolean booleanResult = savingsAccount.transfer(account, amount);
         int result = savingsAccount.balance;
         // then:
-        Assertions.assertTrue(true);
+        Assertions.assertTrue(booleanResult);
         Assertions.assertEquals(expected, result);
     }
 
@@ -28,7 +28,7 @@ public class AppTest {
         SavingsAccount savingsAccount = new SavingsAccount();
         int amount = 100000;
         boolean result = savingsAccount.pay(amount);
-        Assertions.assertFalse(false);
+        Assertions.assertFalse(result);
     }
 
     @ParameterizedTest
@@ -47,5 +47,23 @@ public class AppTest {
                 Arguments.of(800000, 1800000)
         );
     }
+
+    @ParameterizedTest
+    @MethodSource("sourceCreditPay")
+    public void testParamCreditPay(int amount, int expected) {
+        CreditAccount creditAccount = new CreditAccount();
+        creditAccount.pay(amount);
+        int result = creditAccount.balance;
+        Assertions.assertEquals(expected, result);
+    }
+    static Stream<Arguments> sourceCreditPay() {
+        return Stream.of(
+                Arguments.of(200000, -200000),
+                Arguments.of(1500000, -1500000),
+                Arguments.of(800000, -800000)
+        );
+    }
+
+
 
 }
